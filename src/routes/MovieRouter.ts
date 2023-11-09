@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { MovieComponent } from '../components';
+import * as Auth from '../config/middleware/auth';
 
 /**
  * @constant {express.Router}
@@ -32,7 +33,7 @@ const router: Router = Router();
  *              schema:
  *                $ref: '#/components/schemas/Error'
  */
-router.get('/', MovieComponent.findAll);
+router.get('/', Auth.adminRoleCheck, MovieComponent.findAll);
 
 /**
  * POST method route

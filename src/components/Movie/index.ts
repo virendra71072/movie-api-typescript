@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { HttpError } from '../../config/error';
-import { IMovieModel } from './model';
+import { IMovieModel, MovieSearch } from './model';
 import MovieService from './service';
 
 /**
@@ -12,11 +12,22 @@ import MovieService from './service';
  */
 export async function findAll(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
-        const movies: IMovieModel[] = await MovieService.findAll();
+        var q = (req.query?.q )? JSON.stringify(req.query.q): JSON.stringify({});
+        var queryData: MovieSearch = ({} as any) as MovieSearch;
+        if (q && q.length > 2) {
+            queryData = JSON.parse(JSON.parse(q));
+        }
+        const movies: IMovieModel[] = await MovieService.findAll(queryData);
 
         res.status(200).json(movies);
     } catch (error) {
-        next(new HttpError(error.message.status, error.message));
+        if (error.code === 500) {
+            return next(new HttpError(error.message.status, error.message));
+        }
+        res.status(error.message.status).json({
+            status: error.message.status,
+            message: error.message,
+        });
     }
 }
 

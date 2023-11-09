@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { Types } from 'mongoose';
 import { IMovieService } from './interface';
-import MovieModel, { IMovieModel } from './model';
+import MovieModel, { IMovieModel, MovieSearch } from './model';
 import MovieValidation from './validation';
 
 /**
@@ -10,12 +10,20 @@ import MovieValidation from './validation';
  */
 const MovieService: IMovieService = {
     /**
+     * @param {MovieSearch} movie
      * @returns {Promise < IMovieModel[] >}
      * @memberof MovieService
      */
-    async findAll(): Promise < IMovieModel[] > {
+    async findAll(param: MovieSearch): Promise < IMovieModel[] > {
         try {
-            return await MovieModel.find({});
+            var searchPayload = {};
+            if (param.title) {
+                searchPayload = Object.assign({title: {$regex: new RegExp(param.title)}}, searchPayload)
+            }
+            if (param.genre) {
+                searchPayload = Object.assign({genre: {$regex: new RegExp(param.genre)}}, searchPayload)
+            }
+            return await MovieModel.find(searchPayload);
         } catch (error) {
             throw new Error(error.message);
         }

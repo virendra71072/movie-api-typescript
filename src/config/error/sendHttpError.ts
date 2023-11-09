@@ -1,5 +1,5 @@
-import { NextFunction, Request } from 'express';
 import * as express from 'express';
+import { NextFunction, Request } from 'express';
 import { HttpError } from './index';
 
 interface CustomResponse extends express.Response {

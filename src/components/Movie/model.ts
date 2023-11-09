@@ -18,6 +18,16 @@ export interface IMovieModel extends Document {
 }
 
 /**
+ * @export
+ * @interface MovieSearch
+ * @extends {Document}
+ */
+export interface MovieSearch extends Document {
+    title: string;
+    genre: string;
+}
+
+/**
  * @swagger
  * components:
  *  schemas:
@@ -50,8 +60,14 @@ export interface IMovieModel extends Document {
  *        $ref: '#/components/schemas/MovieSchema'
  */
 const MovieSchema: Schema = new Schema({
-    title: String,
-    genre: String,
+    title: {
+        type: String,
+        index: true
+    },
+    genre: {
+        type: String,
+        index: true
+    },
     rating: Number,
     streamingLink: String,
     releaseDate: Date,

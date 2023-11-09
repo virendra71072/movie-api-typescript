@@ -54,6 +54,7 @@ interface CustomResponse extends express.Response {
  */
 export function initErrorHandler(app: express.Application): void {
     app.use((error: Error, req: express.Request, res: CustomResponse) => {
+
         if (typeof error === 'number') {
             error = new HttpError(error); // next(404)
         }

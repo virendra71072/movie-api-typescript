@@ -1,4 +1,4 @@
-import { IMovieModel } from './model';
+import { IMovieModel, MovieSearch } from './model';
 
 /**
  * @export
@@ -7,10 +7,11 @@ import { IMovieModel } from './model';
 export interface IMovieService {
 
     /**
+     * @param {MovieSearch} movieModel
      * @returns {Promise<IMovieModel[]>}
      * @memberof IMovieService
      */
-    findAll(): Promise<IMovieModel[]>;
+    findAll(movieModel: MovieSearch): Promise<IMovieModel[]>;
 
     /**
      * @param {string} code
@@ -20,11 +21,11 @@ export interface IMovieService {
     findOne(code: string): Promise<IMovieModel>;
 
     /**
-     * @param {IMovieModel} userModel
+     * @param {IMovieModel} movieModel
      * @returns {Promise<IMovieModel>}
      * @memberof IMovieService
      */
-    insert(userModel: IMovieModel): Promise<IMovieModel>;
+    insert(movieModel: IMovieModel): Promise<IMovieModel>;
 
     /**
      * @param {string} id
@@ -34,9 +35,9 @@ export interface IMovieService {
     remove(id: string): Promise<IMovieModel>;
 
     /**
-     * @param {string, IMovieModel} id, userModel
+     * @param {string, IMovieModel} id, movieModel
      * @returns {Promise<IMovieModel>}
      * @memberof IMovieService
      */
-    update(id: string, userModel: IMovieModel): Promise<IMovieModel>;
+    update(id: string, movieModel: IMovieModel): Promise<IMovieModel>;
 }

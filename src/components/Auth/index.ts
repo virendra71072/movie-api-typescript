@@ -15,7 +15,7 @@ import AuthService from './service';
 export async function signup(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
         const user: IUserModel = await AuthService.createUser(req.body);
-        const token: string = jwt.sign({ email: user.email }, app.get('secret'), {
+        const token: string = jwt.sign({ email: user.email, role: user.role, id: user._id }, app.get('secret'), {
             expiresIn: '60m',
         });
 
@@ -29,7 +29,7 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
         if (error.code === 500) {
             return next(new HttpError(error.message.status, error.message));
         }
-        res.json({
+        res.status(400).json({
             status: 400,
             message: error.message,
         });
@@ -47,7 +47,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
     try {
         const user: IUserModel = await AuthService.getUser(req.body);
 
-        const token: string = jwt.sign({ email: user.email }, app.get('secret'), {
+        const token: string = jwt.sign({ email: user.email, role: user.role, id: user._id }, app.get('secret'), {
             expiresIn: '60m',
         });
 
@@ -62,7 +62,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
             return next(new HttpError(error.message.status, error.message));
         }
 
-        res.json({
+        res.status(400).json({
             status: 400,
             message: error.message,
         });

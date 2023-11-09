@@ -20,7 +20,6 @@ export class HttpError extends Error {
      */
     constructor(status ? : number, message ? : string) {
         super(message);
-
         Error.captureStackTrace(this, this.constructor);
 
         this.status = status || 500;
